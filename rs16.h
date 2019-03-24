@@ -49,7 +49,7 @@ float temper = 31.0;
 int tempPacketNum = 0;
 int numOfLasers = 16;
 int TEMPERATURE_RANGE = 40;
-
+int dis_resolution_mode = 1;// 0 -> 0.5cm resolution 1-> 1cm resolution
 
 float Calibration_Angle[16] = { -15.0161, -13.0276, -11.0066, -9.0274, -7.0263, -5.0078, -3.0124, -1.0097, 14.9693, 12.98, 10.9928, 8.9785, 6.9769, 4.9935, 2.9981, 0.9954 };
 float Calibration_Curves[7 * 16] = {

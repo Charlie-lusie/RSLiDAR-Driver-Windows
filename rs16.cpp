@@ -14,7 +14,7 @@
 
 // Mode 0: Sensor Steam  1: pcap file
 #define DebugMode 0
-#define SaveMode 0
+#define SaveMode 1
 
 #define PCAP_FILE_NAME "2018-02-04.pcap"
 
@@ -615,7 +615,7 @@ float CalibrateIntensity(float intensity, int calIdx, int distance)
 	{
 		tempInten = tempInten * CurvesRate[calIdx];
 	}
-	tempInten = (int)tempInten*255 > 255 ? 255.0f : tempInten;
+	tempInten = (int)tempInten > 255 ? 255.0f : tempInten;
 	//std::cout << tempInten << endl;
 	return tempInten; // 0~1
 }
@@ -840,7 +840,7 @@ void* saveThread(void *arg)
 		for (int lCounti = 0; lCounti < NumOfPackage * 12 * 32; lCounti++)
 		{
 			if (lPointX[lCounti] == 0 && lPointY[lCounti] == 0) continue;
-			fprintf(fs, "%.3f %.3f %.3f %.3f\n", lPointX[lCounti], lPointY[lCounti], lPointZ[lCounti], lPointI[lCounti]);
+			fprintf(fs, "%.3f %.3f %.3f %d\n", lPointX[lCounti], lPointY[lCounti], lPointZ[lCounti], (int)lPointI[lCounti]);
 		}
 		fclose(fs);
 	}

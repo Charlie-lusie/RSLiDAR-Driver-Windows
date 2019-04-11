@@ -49,7 +49,7 @@ float aIntensityCal[7][32] =
 	15.79, 10.55, 15.7, 7.863, 13.21, 8.758, 11.74, 8.483, 11.23, 7.975, 10.7, 7.957, 12.22, 9.969, 10, 6.786, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 float aIntensityCal_old[1600][32];
-int g_ChannelNum[32][51];
+int g_ChannelNum[16][41];
 float CurvesRate[32];
 bool Curvesis_new = true;
 

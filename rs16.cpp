@@ -297,7 +297,7 @@ void* RSRecvThread(void * arg)
 				}
 				for (lCountj = 0; lCountj < 42; lCountj++)
 				{
-					lOriginalData[lCount * 42 + lCountj] = udpdata.package.Head[lCountj];
+					lOriginalHead[lCount * 42 + lCountj] = udpdata.package.Head[lCountj];
 				}
 				lCount++;
 			}
@@ -660,7 +660,7 @@ void* RSProcess(void *arg)
 					tempPacketNum = 1;
 				}
 
-				azimuth = (float)(256 * gProcessedData[lCounti * 1200 + lCountj * 100 + 2] + gProcessedData[lCounti * 1200 + lCountj * 100 + 3]);
+				azimuth = (float)(256 * (gProcessedData[lCounti * 1200 + lCountj * 100 + 2] & 0xff) + (gProcessedData[lCounti * 1200 + lCountj * 100 + 3] & 0xff));
 			/*	TwoCharsInt A;
 				A.datain[1] = gProcessedData[lCounti * 1200 + lCountj * 100 + 2];
 				A.datain[0] = gProcessedData[lCounti * 1200 + lCountj * 100 + 3];
@@ -669,8 +669,8 @@ void* RSProcess(void *arg)
 				if (lCountj < 11)
 				{
 					int azi1, azi2;
-					azi1 = 256 * gProcessedData[lCounti * 1200 + (lCountj + 1) * 100 + 2] + gProcessedData[lCounti * 1200 + (lCountj + 1) * 100 + 3];
-					azi2 = 256 * gProcessedData[lCounti * 1200 + lCountj * 100 + 2] + gProcessedData[lCounti * 1200 + lCountj * 100 + 3];
+					azi1 = 256 * (gProcessedData[lCounti * 1200 + (lCountj + 1) * 100 + 2] & 0xff) + gProcessedData[lCounti * 1200 + (lCountj + 1) * 100 + 3] & 0xff);
+					azi2 = 256 * (gProcessedData[lCounti * 1200 + lCountj * 100 + 2] & 0xff) + gProcessedData[lCounti * 1200 + lCountj * 100 + 3] & 0xff);
 					azimuth_diff = (float)((36000 + azi1 - azi2) % 36000);
 
 					// Ingnore the block if the azimuth change abnormal
@@ -682,8 +682,8 @@ void* RSProcess(void *arg)
 				else
 				{
 					int azi1, azi2;
-					azi1 = 256 * gProcessedData[lCounti * 1200 + lCountj * 100 + 2] + gProcessedData[lCounti * 1200 + lCountj * 100 + 3];
-					azi2 = 256 * gProcessedData[lCounti * 1200 + (lCountj - 1) * 100 + 2] + gProcessedData[lCounti * 1200 + (lCountj - 1) * 100 + 3];
+					azi1 = 256 * (gProcessedData[lCounti * 1200 + lCountj * 100 + 2] & 0xff) + (gProcessedData[lCounti * 1200 + lCountj * 100 + 3] & 0xff);
+					azi2 = 256 * (gProcessedData[lCounti * 1200 + (lCountj - 1) * 100 + 2] & 0xff) + (gProcessedData[lCounti * 1200 + (lCountj - 1) * 100 + 3] & 0xff);
 					azimuth_diff = (float)((36000 + azi1 - azi2) % 36000);
 
 					// Ingnore the block if the azimuth change abnormal
@@ -728,7 +728,7 @@ void* RSProcess(void *arg)
 
 					float arg_horiz = (float)azimuth_corrected / 18000.0f * 3.1415926;
 					float arg_vert = Calibration_Angle[dsr] / 180 * 3.1415926;
-					float max_distance = 20.0, min_distance = 0.2;
+					float max_distance = 200.0, min_distance = 0.2;
 
 					if (distance2 > max_distance || distance2 < min_distance)  // invalid distance
 					{
@@ -850,6 +850,7 @@ void* saveThread(void *arg)
 int main(int argc, char* argv[])
 {
 	pthread_t lRS, lRSProcess, lSave;
+	loadConfigFile();
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);

@@ -1,5 +1,5 @@
 # RSLiDAR-Driver-Windows
-Windows drvier for RS-LiDAR-16. Tool to decode and visualize data packets.
+This is a windows drvier for RS-LiDAR-16( Robosense LiDAR: https://www.robosense.ai/en ). And a tool to decode and visualize LiDAR data packets.
 
 ## 3rd party  library needed:
 - pthread
